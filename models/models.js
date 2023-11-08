@@ -12,8 +12,8 @@ const User = sequelize.define("user", {
     name: { type: DataTypes.STRING },
     email: { type: DataTypes.STRING, unique: true },
     password: { type: DataTypes.STRING },
-    role: { type: DataTypes.STRING, defaultValue: "user" },
-    status: {type: DataTypes.STRING, defaultValue: "active" }
+    role: { type: DataTypes.STRING, defaultValue: "USER" },
+    status: {type: DataTypes.STRING, defaultValue: "ACTIVE" }
 });
 
 const Comment = sequelize.define("comment", {
@@ -80,6 +80,9 @@ Item.belongsTo(Collection);
 Collection.hasMany(ValueField);
 ValueField.belongsTo(Collection);
 
+Collection.hasMany(Field);
+Field.belongsTo(Collection);
+
 Field.hasMany(ValueField);
 ValueField.belongsTo(Field);
 
@@ -92,5 +95,5 @@ module.exports = {
     ItemTag,
     Comment,
     Like,
-    Tag,
+    Tag
 };
