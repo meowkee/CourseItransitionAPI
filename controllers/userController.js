@@ -18,9 +18,7 @@ class UserController {
             const user = await User.create({
                 name,
                 email,
-                password: hashPassword,
-                signUpDate: new Date(),
-                status: "Active",
+                password: hashPassword
             });
             const token = generateJwt(user.name, user.email);
             return res.json({ token });
@@ -32,7 +30,6 @@ class UserController {
     }
 
     async login(req, res, next) {
-        const currentDate = new Date();
         const { email, password } = req.body;
         const user = await User.findOne({ where: { email } });
         if (!user || !bcrypt.compareSync(password, user.password)) {
@@ -40,10 +37,9 @@ class UserController {
                 ApiError.internal("User not found or password mismatch")
             );
         }
-        if (user.status === "Blocked") {
+        if (user.status === "BLOCKED") {
             return next(ApiError.internal("User is blocked"));
         }
-        await user.update({ lastSignInDate: currentDate });
         const token = generateJwt(user.name, user.email);
         return res.json({ token });
     }

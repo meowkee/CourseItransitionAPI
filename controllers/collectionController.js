@@ -2,19 +2,20 @@ const { Collection, Field } = require("../models/models");
 
 class CollectionController {
     async create(req, res) {
-        const { name, description, fields } = req.body;
+        const { name, description, fields, userId } = req.body;
         const collection = await Collection.create({
             name: name,
             description: description,
+            userId: userId
         });
-        const addedFields = await fields.forEach((field) =>
+        await fields.forEach((field) =>
             Field.create({
                 collectionId: collection.id,
                 name: field.name,
                 type: field.type,
             })
         );
-        return res.json({ collection: collection, addedFields: addedFields });
+        return res.json({ collection: collection});
     }
 
     async getById(req, res) {

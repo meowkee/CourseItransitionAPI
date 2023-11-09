@@ -83,8 +83,14 @@ ValueField.belongsTo(Collection);
 Collection.hasMany(Field);
 Field.belongsTo(Collection);
 
+Item.hasMany(ValueField);
+ValueField.belongsTo(Item);
+
 Field.hasMany(ValueField);
 ValueField.belongsTo(Field);
+
+User.hasMany(Collection);
+Collection.belongsTo(User);
 
 module.exports = {
     User,
