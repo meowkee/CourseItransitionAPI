@@ -1,60 +1,12 @@
-const sequelize = require("../db");
-const { DataTypes } = require("sequelize");
-
-const idParameters = {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-};
-
-const User = sequelize.define("user", {
-    id: idParameters,
-    name: { type: DataTypes.STRING },
-    email: { type: DataTypes.STRING, unique: true },
-    password: { type: DataTypes.STRING },
-    role: { type: DataTypes.STRING, defaultValue: "USER" },
-    status: {type: DataTypes.STRING, defaultValue: "ACTIVE" }
-});
-
-const Comment = sequelize.define("comment", {
-    id: idParameters,
-    text: { type: DataTypes.TEXT },
-});
-
-const Like = sequelize.define("like", {
-    id: idParameters,
-});
-
-const Tag = sequelize.define("tag", {
-    id: idParameters,
-    name: { type: DataTypes.STRING },
-});
-
-const ItemTag = sequelize.define("itemtag", {
-    id: idParameters,
-});
-
-const Item = sequelize.define("item", {
-    id: idParameters,
-    name: { type: DataTypes.STRING },
-});
-
-const Collection = sequelize.define("collection", {
-    id: idParameters,
-    name: { type: DataTypes.STRING },
-    description: { type: DataTypes.TEXT },
-});
-
-const Field = sequelize.define("field", {
-    id: idParameters,
-    name: { type: DataTypes.STRING },
-    type: { type: DataTypes.STRING },
-});
-
-const ValueField = sequelize.define("valuefield", {
-    id: idParameters,
-    value: { type: DataTypes.TEXT },
-});
+import { Like } from "./likeModel.js";
+import { Comment } from "./commentModel.js";
+import { Tag } from "./tagModel.js";
+import { Item } from "./itemModel.js";
+import { ItemTag } from "./itemTagModel.js";
+import { Collection } from "./collectionModel.js";
+import { ValueField } from "./valueFieldModel.js";
+import { Field } from "./fieldModel.js";
+import { User } from "./userModel.js";
 
 User.hasMany(Comment);
 Comment.belongsTo(User);
@@ -91,15 +43,3 @@ ValueField.belongsTo(Field);
 
 User.hasMany(Collection);
 Collection.belongsTo(User);
-
-module.exports = {
-    User,
-    Field,
-    ValueField,
-    Collection,
-    Item,
-    ItemTag,
-    Comment,
-    Like,
-    Tag
-};

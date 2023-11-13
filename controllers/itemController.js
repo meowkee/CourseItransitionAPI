@@ -1,4 +1,6 @@
-const { Item, Tag, ValueField } = require("../models/models");
+import { Item } from "../models/itemModel.js";
+import { Tag } from "../models/tagModel.js";
+import { ValueField } from "../models/valueFieldModel.js";
 
 class ItemController {
     async create(req, res) {
@@ -13,7 +15,7 @@ class ItemController {
                 collectionId: collectionId,
                 value: field.value,
                 fieldId: field.fieldId,
-                itemId: item.id
+                itemId: item.id,
             })
         );
         return res.json({ item });
@@ -29,4 +31,4 @@ class ItemController {
     }
 }
 
-module.exports = new ItemController();
+export default new ItemController();

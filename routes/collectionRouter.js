@@ -1,8 +1,9 @@
-const Router = require('express');
-const collectionController = require('../controllers/collectionController');
-const router = new Router();
+import { Router } from 'express';
+import collectionController from '../controllers/collectionController.js';
+
+const router = Router();
 
 router.post('/', collectionController.create);
 router.get('/:id', collectionController.getById);
 
-module.exports = router;
+export default router;

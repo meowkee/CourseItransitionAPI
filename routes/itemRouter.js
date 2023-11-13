@@ -1,8 +1,10 @@
-const Router = require('express');
-const itemController = require('../controllers/itemController');
-const router = new Router();
+import { Router } from 'express';
+import itemController from '../controllers/itemController.js';
+
+const router = Router();
+
 
 router.post('/', itemController.create);
 router.get('/:id', itemController.getAll);
 
-module.exports = router;
+export default router;

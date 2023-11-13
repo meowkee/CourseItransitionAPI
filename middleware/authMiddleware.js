@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
-module.exports = function (req, res, next, role) {
+export default function (req, res, next) {
     if (req.method === "OPTIONS") {
         next();
     }
@@ -10,9 +10,6 @@ module.exports = function (req, res, next, role) {
             return res.status(401).json({ message: "Not authorized" });
         }
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        if (decoded.role !== role) {
-            return res.status(403).json({message: "Access denied"})
-        }
         req.user = decoded;
         next();
     } catch (e) {

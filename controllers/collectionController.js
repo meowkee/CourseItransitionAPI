@@ -1,4 +1,5 @@
-const { Collection, Field } = require("../models/models");
+import { Collection } from "../models/collectionModel.js";
+import { Field } from "../models/fieldModel.js";
 
 class CollectionController {
     async create(req, res) {
@@ -6,7 +7,7 @@ class CollectionController {
         const collection = await Collection.create({
             name: name,
             description: description,
-            userId: userId
+            userId: userId,
         });
         await fields.forEach((field) =>
             Field.create({
@@ -15,7 +16,7 @@ class CollectionController {
                 type: field.type,
             })
         );
-        return res.json({ collection: collection});
+        return res.json({ collection: collection });
     }
 
     async getById(req, res) {
@@ -28,4 +29,4 @@ class CollectionController {
     }
 }
 
-module.exports = new CollectionController();
+export default new CollectionController();

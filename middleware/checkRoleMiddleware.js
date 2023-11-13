@@ -1,7 +1,6 @@
-const authMiddleware = require('./authMiddleware');
-
-module.exports = function(role) {
-    return function(req, res, next) {
-        authMiddleware(req, res, next, role);
+export default function (role) {
+    return (req, res, next) => {
+        if (req.user.role !== role) return res.sendStatus(403);
+        next();
     };
-};
+}

@@ -1,7 +1,10 @@
-const ApiError = require("../error/ApiError");
-const bcrypt = require("bcrypt");
-const { User } = require("../models/models");
-const jwt = require("jsonwebtoken");
+import ApiError from "../error/ApiError.js";
+import bcrypt from "bcrypt";
+import { User } from "../models/userModel.js";
+import jwt from "jsonwebtoken";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const generateJwt = (name, email, role) => {
     return jwt.sign({ name, email, role }, process.env.SECRET_KEY, {
@@ -19,7 +22,7 @@ class UserController {
                 name,
                 email,
                 role,
-                password: hashPassword
+                password: hashPassword,
             });
             const token = generateJwt(user.name, user.email, user.role);
             return res.json({ token });
@@ -51,4 +54,4 @@ class UserController {
     }
 }
 
-module.exports = new UserController();
+export default new UserController();
