@@ -3,24 +3,25 @@ const bcrypt = require("bcrypt");
 const { User } = require("../models/models");
 const jwt = require("jsonwebtoken");
 
-const generateJwt = (name, email) => {
-    return jwt.sign({ name, email }, process.env.SECRET_KEY, {
+const generateJwt = (name, email, role) => {
+    return jwt.sign({ name, email, role }, process.env.SECRET_KEY, {
         expiresIn: "24h",
     });
 };
 
 class UserController {
     async registration(req, res, next) {
-        const { name, email, password } = req.body;
+        const { name, email, password, role } = req.body;
         const salt = bcrypt.genSaltSync(Number(process.env.SALT_ROUNDS));
         const hashPassword = bcrypt.hashSync(password, salt);
         try {
             const user = await User.create({
                 name,
                 email,
+                role,
                 password: hashPassword
             });
-            const token = generateJwt(user.name, user.email);
+            const token = generateJwt(user.name, user.email, user.role);
             return res.json({ token });
         } catch (error) {
             return next(
@@ -40,12 +41,12 @@ class UserController {
         if (user.status === "BLOCKED") {
             return next(ApiError.internal("User is blocked"));
         }
-        const token = generateJwt(user.name, user.email);
+        const token = generateJwt(user.name, user.email, user.role);
         return res.json({ token });
     }
 
     async checkAuthorization(req, res) {
-        const token = generateJwt(req.user.name, req.user.email);
+        const token = generateJwt(req.user.name, req.user.email, req.user.role);
         return res.json({ token });
     }
 }

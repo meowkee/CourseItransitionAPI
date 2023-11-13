@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-function verifyToken(req, res, next, role) {
+module.exports = function (req, res, next, role) {
     if (req.method === "OPTIONS") {
         next();
     }
@@ -10,8 +10,8 @@ function verifyToken(req, res, next, role) {
             return res.status(401).json({ message: "Not authorized" });
         }
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        if (role && decoded.role !== role) {
-            return res.status(403).json({ message: "Access denied" });
+        if (decoded.role !== role) {
+            return res.status(403).json({message: "Access denied"})
         }
         req.user = decoded;
         next();
@@ -19,7 +19,3 @@ function verifyToken(req, res, next, role) {
         res.status(401).json({ message: "Not authorized" });
     }
 }
-
-module.exports = {
-    verifyToken,
-};

@@ -1,7 +1,7 @@
-const { verifyToken } = require('./authUtils');
+const authMiddleware = require('./authMiddleware');
 
 module.exports = function(role) {
     return function(req, res, next) {
-        verifyToken(req, res, next, role);
+        authMiddleware(req, res, next, role);
     };
 };
