@@ -1,5 +1,6 @@
-import {Sequelize} from 'sequelize';
-import dotenv from 'dotenv';
+import { Sequelize } from "sequelize";
+import dotenv from "dotenv";
+import pg from "pg";
 
 dotenv.config();
 
@@ -10,5 +11,6 @@ export default new Sequelize(
     {
         dialect: 'postgresql',
         host: process.env.DB_HOST,
-    }, 
+        dialectModule: pg
+    }
 );
