@@ -9,8 +9,13 @@ export default new Sequelize(
     process.env.DB_USER,
     process.env.DB_PASSWORD,
     {
-        dialect: 'postgresql',
+        dialect: "postgresql",
         host: process.env.DB_HOST,
-        dialectModule: pg
+        dialectModule: pg,
+        dialectOptions: {
+            ssl: {
+                require: false,
+            },
+        },
     }
 );
