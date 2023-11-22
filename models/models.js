@@ -7,6 +7,7 @@ import { Collection } from "./collectionModel.js";
 import { ValueField } from "./valueFieldModel.js";
 import { Field } from "./fieldModel.js";
 import { User } from "./userModel.js";
+import { Theme } from "./themeModel.js";
 
 User.hasMany(Comment);
 Comment.belongsTo(User);
@@ -14,11 +15,8 @@ Comment.belongsTo(User);
 User.hasMany(Like);
 Like.belongsTo(User);
 
-Tag.hasMany(ItemTag);
-ItemTag.belongsTo(Tag);
-
-Item.hasMany(ItemTag);
-ItemTag.belongsTo(Item);
+Item.hasMany(Tag);
+Tag.belongsTo(Item);
 
 Item.hasMany(Comment);
 Comment.belongsTo(Item);
@@ -43,3 +41,6 @@ ValueField.belongsTo(Field);
 
 User.hasMany(Collection);
 Collection.belongsTo(User);
+
+Theme.hasMany(Collection);
+Collection.belongsTo(Theme);

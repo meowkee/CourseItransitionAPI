@@ -6,8 +6,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const generateJwt = (name, email, role) => {
-    return jwt.sign({ name, email, role }, process.env.SECRET_KEY, {
+const generateJwt = (name, email, role, id) => {
+    return jwt.sign({ name, email, role, id }, process.env.SECRET_KEY, {
         expiresIn: "24h",
     });
 };
@@ -24,7 +24,7 @@ class UserController {
                 role,
                 password: hashPassword,
             });
-            const token = generateJwt(user.name, user.email, user.role);
+            const token = generateJwt(user.name, user.email, user.role, user.id);
             return res.json({ token });
         } catch (error) {
             return next(
@@ -44,13 +44,19 @@ class UserController {
         if (user.status === "BLOCKED") {
             return next(ApiError.internal("User is blocked"));
         }
-        const token = generateJwt(user.name, user.email, user.role);
+        const token = generateJwt(user.name, user.email, user.role, user.id);
         return res.json({ token });
     }
 
     async checkAuthorization(req, res) {
-        const token = generateJwt(req.user.name, req.user.email, req.user.role);
+        const token = generateJwt(req.user.name, req.user.email, req.user.role, req.user.id);
         return res.json({ token });
+    }
+
+    async getById(req, res) {
+        const { id } = req.params;
+        const user = await User.findOne({where: {id: id}});
+        return res.json({ user });
     }
 }
 

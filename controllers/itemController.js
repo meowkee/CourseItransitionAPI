@@ -1,5 +1,6 @@
 import { Item } from "../models/itemModel.js";
 import { Tag } from "../models/tagModel.js";
+import { ItemTag } from "../models/itemTagModel.js";
 import { ValueField } from "../models/valueFieldModel.js";
 
 class ItemController {
@@ -9,7 +10,9 @@ class ItemController {
             name: name,
             collectionId: collectionId,
         });
-        await tags.forEach((tag) => Tag.create({ name: tag.name }));
+        await tags.forEach((tag) =>
+            Tag.create({ name: tag.name, itemId: item.id })
+        );
         await fields.forEach((field) =>
             ValueField.create({
                 collectionId: collectionId,
@@ -25,9 +28,12 @@ class ItemController {
         const { id } = req.params;
         const items = await Item.findAll({
             where: { collectionId: id },
-            include: [{ model: ValueField, as: "valuefields" }],
+            include: [
+                { model: ValueField, as: "valuefields" },
+                { model: Tag, as: "tags" },
+            ],
         });
-        return res.json({ items });
+        return res.json(items);
     }
 }
 
