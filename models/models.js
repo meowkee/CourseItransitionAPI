@@ -2,7 +2,6 @@ import { Like } from "./likeModel.js";
 import { Comment } from "./commentModel.js";
 import { Tag } from "./tagModel.js";
 import { Item } from "./itemModel.js";
-import { ItemTag } from "./itemTagModel.js";
 import { Collection } from "./collectionModel.js";
 import { ValueField } from "./valueFieldModel.js";
 import { Field } from "./fieldModel.js";

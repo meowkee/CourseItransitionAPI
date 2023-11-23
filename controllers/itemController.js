@@ -1,6 +1,5 @@
 import { Item } from "../models/itemModel.js";
 import { Tag } from "../models/tagModel.js";
-import { ItemTag } from "../models/itemTagModel.js";
 import { ValueField } from "../models/valueFieldModel.js";
 
 class ItemController {
@@ -34,6 +33,18 @@ class ItemController {
             ],
         });
         return res.json(items);
+    }
+
+    async getOne(req, res) {
+        const {id} = req.params;
+        const item = await Item.findOne({
+            where: { id: id },
+            include: [
+                { model: ValueField, as: "valuefields" },
+                { model: Tag, as: "tags" },
+            ],
+        });
+        return res.json(item)
     }
 }
 

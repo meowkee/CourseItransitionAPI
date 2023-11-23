@@ -2,7 +2,8 @@ import ApiError from "../error/ApiError.js";
 import bcrypt from "bcrypt";
 import { User } from "../models/userModel.js";
 import jwt from "jsonwebtoken";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
+import { statuses } from "../consts/statuses.js";
 
 dotenv.config();
 
@@ -24,7 +25,12 @@ class UserController {
                 role,
                 password: hashPassword,
             });
-            const token = generateJwt(user.name, user.email, user.role, user.id);
+            const token = generateJwt(
+                user.name,
+                user.email,
+                user.role,
+                user.id
+            );
             return res.json({ token });
         } catch (error) {
             return next(
@@ -41,7 +47,7 @@ class UserController {
                 ApiError.internal("User not found or password mismatch")
             );
         }
-        if (user.status === "BLOCKED") {
+        if (user.status === statuses.blocked) {
             return next(ApiError.internal("User is blocked"));
         }
         const token = generateJwt(user.name, user.email, user.role, user.id);
@@ -49,13 +55,21 @@ class UserController {
     }
 
     async checkAuthorization(req, res) {
-        const token = generateJwt(req.user.name, req.user.email, req.user.role, req.user.id);
+        const token = generateJwt(
+            req.user.name,
+            req.user.email,
+            req.user.role,
+            req.user.id
+        );
         return res.json({ token });
-    }
+    }   
 
-    async getById(req, res) {
+    async getById(req, res, next) {
         const { id } = req.params;
-        const user = await User.findOne({where: {id: id}});
+        const user = await User.findOne({ where: { id: id } });
+        if (!user) {
+            return next(ApiError.notFound("User not found"));
+        }
         return res.json({ user });
     }
 }
