@@ -8,5 +8,6 @@ router.post("/registration", userController.registration);
 router.post("/login", userController.login);
 router.get("/auth", authMiddleware, userController.checkAuthorization);
 router.get("/:id", userController.getById);
+router.get("/", userController.getAll);
 
 export default router;

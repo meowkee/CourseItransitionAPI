@@ -72,6 +72,11 @@ class UserController {
         }
         return res.json({ user });
     }
+
+    async getAll(req, res, next) {
+        const users = await User.findAll();
+        return res.json(users);
+    }
 }
 
 export default new UserController();

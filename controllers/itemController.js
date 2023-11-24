@@ -46,6 +46,12 @@ class ItemController {
         });
         return res.json(item)
     }
+
+    async deleteById(req, res) {
+        const { id } = req.params;
+        await Item.destroy({where: { id: id }, include: [{ model: ValueField, as: "valuefields"}]})
+        return res.json("Item deleted successfully");
+    }
 }
 
 export default new ItemController();

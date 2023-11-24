@@ -6,5 +6,6 @@ const router = Router();
 router.post('/', itemController.create);
 router.get('/col/:id', itemController.getAll);
 router.get('/:id', itemController.getOne);
+router.delete('/:id', itemController.deleteById);
 
 export default router;
